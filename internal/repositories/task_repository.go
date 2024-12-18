@@ -6,56 +6,57 @@ import (
 )
 
 type TaskRepository interface {
-	Create(task *models.Task) error
-	FindByID(id int64) (*models.Task, error)
-	Update(task *models.Task) error
+	FindById(id int64) (*models.Task, error)
+	List() ([]*models.Task, error)
+	Create(task *models.Task) ([]*models.Task, error)
+	Update(task *models.Task) ([]*models.Task, error)
 	Delete(id int64) error
 }
 
 type MockTaskRepository struct {
-	Tasks []models.Task
+	tasks []*models.Task
 }
 
-func (r *MockTaskRepository) Create(task *models.Task) error {
-	r.Tasks = append(r.Tasks, *task)
-	return nil
+func NewMockTaskRepository() TaskRepository {
+	return &MockTaskRepository{
+		tasks: []*models.Task{},
+	}
 }
 
-func (r *MockTaskRepository) FindByID(id int64) (*models.Task, error) {
-	var err error
-	for _, task := range r.Tasks {
+func (m *MockTaskRepository) List() ([]*models.Task, error) {
+	return m.tasks, nil
+}
+func (m *MockTaskRepository) FindById(id int64) (*models.Task, error) {
+	for _, task := range m.tasks {
 		if task.ID == id {
-			return &task, nil
+			return task, nil
 		}
 	}
-
-	err = fmt.Errorf("task with ID %v not found", id)
-	return nil, err
+	return nil, fmt.Errorf("task not found")
 }
 
-func (r *MockTaskRepository) Update(task *models.Task) error {
-	var err error
-	for i, itTask := range r.Tasks {
+func (m *MockTaskRepository) Create(task *models.Task) ([]*models.Task, error) {
+	m.tasks = append(m.tasks, task)
+	return m.tasks, nil
+}
+
+func (m *MockTaskRepository) Update(task *models.Task) ([]*models.Task, error) {
+	for i, itTask := range m.tasks {
 		if itTask.ID == task.ID {
-			r.Tasks[i].Completed = task.Completed
-			r.Tasks[i].Name = task.Name
-
-			return nil
+			m.tasks[i].Name = task.Name
+			m.tasks[i].Completed = task.Completed
+			return m.tasks, nil
 		}
 	}
-
-	err = fmt.Errorf("task with ID %v not found", task.ID)
-	return err
+	return nil, fmt.Errorf("task not found")
 }
 
-func (r *MockTaskRepository) Delete(id int64) error {
-	var err error
-	for i, itTask := range r.Tasks {
+func (m *MockTaskRepository) Delete(id int64) error {
+	for i, itTask := range m.tasks {
 		if itTask.ID == id {
-			r.Tasks = append(r.Tasks[:i], r.Tasks[i+1:]...)
+			m.tasks = append(m.tasks[:i], m.tasks[i+1:]...)
 			return nil
 		}
 	}
-	err = fmt.Errorf("task with ID %v not found", id)
-	return err
+	return fmt.Errorf("task not found")
 }

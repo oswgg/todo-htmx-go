@@ -6,30 +6,39 @@ import (
 )
 
 type TaskService interface {
-	Create()
-	FindByID()
-	Update()
-	Delete()
+	Create(task *models.Task) ([]*models.Task, error)
+	Update(task *models.Task) ([]*models.Task, error)
+	Delete(id int64) error
+	List() ([]*models.Task, error)
 }
 
 type TaskServiceImpl struct {
-	Repository repositories.TaskRepository
+	repo repositories.TaskRepository
 }
 
-func NewTaskService(repository repositories.TaskRepository) *TaskService {
-	var taskService TaskService
-
-	taskService = &TaskServiceImpl{
-		Repository: &repositories.MockTaskRepository{Tasks: make([]models.Task, 0)},
+func NewTaskService(repo repositories.TaskRepository) TaskService {
+	return &TaskServiceImpl{
+		repo: repo,
 	}
-
-	return &taskService
 }
 
-func (s *TaskServiceImpl) Create() {}
-
-func (s *TaskServiceImpl) FindByID() {}
-
-func (s *TaskServiceImpl) Update() {}
-
-func (s *TaskServiceImpl) Delete() {}
+func (s *TaskServiceImpl) Create(task *models.Task) ([]*models.Task, error) {
+	newTaskList, err := s.repo.Create(task)
+	if err != nil {
+		return nil, err
+	}
+	return newTaskList, nil
+}
+func (s *TaskServiceImpl) Update(task *models.Task) ([]*models.Task, error) {
+	updatedTaskList, err := s.repo.Update(task)
+	if err != nil {
+		return nil, err
+	}
+	return updatedTaskList, nil
+}
+func (s *TaskServiceImpl) Delete(id int64) error {
+	return s.repo.Delete(id)
+}
+func (s *TaskServiceImpl) List() ([]*models.Task, error) {
+	return s.repo.List()
+}

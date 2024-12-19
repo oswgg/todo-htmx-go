@@ -18,11 +18,23 @@ func NewTaskHandler(service service.TaskService) *TaskHandler {
 	return &TaskHandler{service: service}
 }
 
+func (h *TaskHandler) List(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("web/templates/base.html", "web/templates/index.html"))
+	list, err := h.service.List()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = tmpl.ExecuteTemplate(w, "base.html", list)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
 func (h *TaskHandler) Create(w http.ResponseWriter, r *http.Request) {
 	// Decode the request body into a Task
 	var name string = r.PostFormValue("Name")
 	newTask := models.Task{
-		ID:        1,
 		Name:      name,
 		CreatedAt: time.Now(),
 		Completed: false,

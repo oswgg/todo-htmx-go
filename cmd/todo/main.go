@@ -3,11 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/oswgg/todo-htmx/internal/handlers"
-	"github.com/oswgg/todo-htmx/internal/models"
 	"github.com/oswgg/todo-htmx/internal/repositories"
 	"github.com/oswgg/todo-htmx/internal/service"
 	"net/http"
-	"text/template"
 )
 
 func main() {
@@ -19,7 +17,7 @@ func main() {
 
 	root.HandleFunc("POST /task", taskHandler.Create)
 	root.HandleFunc("PUT /task/{id}/toggle", taskHandler.ToggleTask)
-	root.HandleFunc("GET /", homeHandler)
+	root.HandleFunc("GET /", taskHandler.List)
 
 	server := &http.Server{
 		Addr:    ":8080",
@@ -27,14 +25,6 @@ func main() {
 	}
 	fmt.Printf("Listening on %s\n", server.Addr)
 	err := server.ListenAndServe()
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-func homeHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("web/templates/base.html", "web/templates/index.html"))
-	err := tmpl.ExecuteTemplate(w, "base.html", []models.Task{})
 	if err != nil {
 		fmt.Println(err)
 	}

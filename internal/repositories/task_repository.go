@@ -15,7 +15,8 @@ type TaskRepository interface {
 }
 
 type MockTaskRepository struct {
-	tasks []*models.Task
+	tasks  []*models.Task
+	nextID int64
 }
 
 func NewMockTaskRepository() TaskRepository {
@@ -37,7 +38,9 @@ func (m *MockTaskRepository) FindById(id int64) (*models.Task, error) {
 }
 
 func (m *MockTaskRepository) Create(task *models.Task) ([]*models.Task, error) {
+	task.ID = m.nextID
 	m.tasks = append(m.tasks, task)
+	m.nextID++
 	return m.tasks, nil
 }
 

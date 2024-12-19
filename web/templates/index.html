@@ -1,0 +1,34 @@
+{{ define "content" }}
+<h1>Mi lista de tareas</h1>
+    <form hx-post="/task" hx-target="#tasks-list" hx-swap="beforeend">
+        <label>
+            <input type="text" name="Name" placeholder="Task..." required />
+        </label>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="tasks-list">
+        {{ template "tasks-list" . }}
+    </div>
+{{ end }}
+
+{{ define "tasks-list" }}
+    {{ range . }}
+        {{ template "task" . }}
+    {{end}}
+{{ end }}
+
+{{ define "task" }}
+    <div class="task-item {{if .Completed}}completed{{end}}" id="task-{{.ID}}">
+        <input
+                {{if .Completed}}checked{{end}}
+                hx-put="/task/{{.ID}}/toggle"
+                hx-target="#task-{{.ID}}"
+                hx-swap="outerHTML"
+                type="checkbox"
+                name="completed"
+                value="{{.ID}}"
+        />
+        {{.Name}}
+    </div>
+{{ end }}

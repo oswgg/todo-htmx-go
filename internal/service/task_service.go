@@ -9,6 +9,7 @@ type TaskService interface {
 	Create(task *models.Task) ([]*models.Task, error)
 	Update(task *models.Task) ([]*models.Task, error)
 	Delete(id int64) error
+	Toggle(id int64) (*models.Task, error)
 	List() ([]*models.Task, error)
 }
 
@@ -41,4 +42,7 @@ func (s *TaskServiceImpl) Delete(id int64) error {
 }
 func (s *TaskServiceImpl) List() ([]*models.Task, error) {
 	return s.repo.List()
+}
+func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
+	return s.repo.Toggle(id)
 }

@@ -10,6 +10,7 @@ type TaskRepository interface {
 	List() ([]*models.Task, error)
 	Create(task *models.Task) ([]*models.Task, error)
 	Update(task *models.Task) ([]*models.Task, error)
+	Toggle(id int64) (*models.Task, error)
 	Delete(id int64) error
 }
 
@@ -59,4 +60,14 @@ func (m *MockTaskRepository) Delete(id int64) error {
 		}
 	}
 	return fmt.Errorf("task not found")
+}
+
+func (m *MockTaskRepository) Toggle(id int64) (*models.Task, error) {
+	for i, itTask := range m.tasks {
+		if itTask.ID == id {
+			m.tasks[i].Completed = !m.tasks[i].Completed
+		}
+		return m.tasks[i], nil
+	}
+	return nil, fmt.Errorf("task not found")
 }

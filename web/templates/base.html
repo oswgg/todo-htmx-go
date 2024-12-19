@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+    <!-- HTMX desde CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        .task-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    {{block "content" .}}
+    {{end}}
+</div>
+</body>
+</html>

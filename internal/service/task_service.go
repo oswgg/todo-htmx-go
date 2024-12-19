@@ -6,7 +6,7 @@ import (
 )
 
 type TaskService interface {
-	Create(task *models.Task) ([]*models.Task, error)
+	Create(task *models.Task) (*models.Task, error)
 	Update(task *models.Task) ([]*models.Task, error)
 	Delete(id int64) error
 	Toggle(id int64) (*models.Task, error)
@@ -23,7 +23,7 @@ func NewTaskService(repo repositories.TaskRepository) TaskService {
 	}
 }
 
-func (s *TaskServiceImpl) Create(task *models.Task) ([]*models.Task, error) {
+func (s *TaskServiceImpl) Create(task *models.Task) (*models.Task, error) {
 	newTaskList, err := s.repo.Create(task)
 	if err != nil {
 		return nil, err

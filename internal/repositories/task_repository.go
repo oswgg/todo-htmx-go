@@ -8,7 +8,7 @@ import (
 type TaskRepository interface {
 	FindById(id int64) (*models.Task, error)
 	List() ([]*models.Task, error)
-	Create(task *models.Task) ([]*models.Task, error)
+	Create(task *models.Task) (*models.Task, error)
 	Update(task *models.Task) ([]*models.Task, error)
 	Toggle(id int64) (*models.Task, error)
 	Delete(id int64) error
@@ -37,11 +37,11 @@ func (m *MockTaskRepository) FindById(id int64) (*models.Task, error) {
 	return nil, fmt.Errorf("task not found")
 }
 
-func (m *MockTaskRepository) Create(task *models.Task) ([]*models.Task, error) {
+func (m *MockTaskRepository) Create(task *models.Task) (*models.Task, error) {
 	task.ID = m.nextID
 	m.tasks = append(m.tasks, task)
 	m.nextID++
-	return m.tasks, nil
+	return task, nil
 }
 
 func (m *MockTaskRepository) Update(task *models.Task) ([]*models.Task, error) {
@@ -69,8 +69,8 @@ func (m *MockTaskRepository) Toggle(id int64) (*models.Task, error) {
 	for i, itTask := range m.tasks {
 		if itTask.ID == id {
 			m.tasks[i].Completed = !m.tasks[i].Completed
+			return m.tasks[i], nil
 		}
-		return m.tasks[i], nil
 	}
 	return nil, fmt.Errorf("task not found")
 }

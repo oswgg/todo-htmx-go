@@ -32,23 +32,22 @@ func (h *TaskHandler) List(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) Create(w http.ResponseWriter, r *http.Request) {
-	// Decode the request body into a Task
 	var name string = r.PostFormValue("Name")
-	newTask := models.Task{
+	taskToCreate := models.Task{
 		Name:      name,
 		CreatedAt: time.Now(),
 		Completed: false,
 	}
 
 	// Call the service to create the task
-	list, err := h.service.Create(&newTask)
+	newTask, err := h.service.Create(&taskToCreate)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
 	tmpl := template.Must(template.ParseFiles("web/templates/index.html"))
-	err = tmpl.ExecuteTemplate(w, "task", list[len(list)-1])
+	err = tmpl.ExecuteTemplate(w, "task", newTask)
 	if err != nil {
 		fmt.Println(err)
 	}

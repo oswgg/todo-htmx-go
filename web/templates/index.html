@@ -30,5 +30,11 @@
                 value="{{.ID}}"
         />
         {{.Name}}
+        <button
+                hx-get="/task/update/{{.ID}}"
+                hx-target="#container"
+                hx-swap="outerHTML"
+                type="button"
+        >Editar</button>
     </div>
 {{ end }}

@@ -54,6 +54,28 @@ func (h *TaskHandler) Create(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (h *TaskHandler) UpdateView(w http.ResponseWriter, r *http.Request) {
+	var id, _ = strconv.Atoi(r.URL.Query().Get("id"))
+	var task *models.Task
+	var err error
+
+	task, err = h.service.FindByID(int64(id))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	tmpl := template.Must(template.ParseFiles("web/templates/base.html", "web/templates/update-task.html"))
+	err = tmpl.ExecuteTemplate(w, "base.html", task)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
+	var id, _ = strconv.Atoi(r.URL.Query().Get("id"))
+	fmt.Println(id)
+}
+
 func (h *TaskHandler) ToggleTask(w http.ResponseWriter, r *http.Request) {
 	var id int
 	var err error

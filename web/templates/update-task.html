@@ -1,0 +1,7 @@
+{{ define "content" }}
+  <h1>Editando</h1>
+  <form hx-post="/task/update/{{ .ID }}" hx-target="#task-form" hx-swap="outerHTML">
+    <input type="text" name="Name" placeholder="Name..." value="{{ .Name }}" />
+    <input type="submit" />
+  </form>
+{{ end }}

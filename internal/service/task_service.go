@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/oswgg/todo-htmx/internal/models"
 	"github.com/oswgg/todo-htmx/internal/repositories"
 )
@@ -48,5 +49,6 @@ func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
 	return s.repo.Toggle(id)
 }
 func (s *TaskServiceImpl) FindByID(id int64) (*models.Task, error) {
+	fmt.Println(id)
 	return s.repo.FindById(id)
 }

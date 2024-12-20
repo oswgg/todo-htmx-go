@@ -29,9 +29,9 @@ func (m *MockTaskRepository) List() ([]*models.Task, error) {
 	return m.tasks, nil
 }
 func (m *MockTaskRepository) FindById(id int64) (*models.Task, error) {
-	for _, task := range m.tasks {
+	for i, task := range m.tasks {
 		if task.ID == id {
-			return task, nil
+			return m.tasks[i], nil
 		}
 	}
 	return nil, fmt.Errorf("task not found")

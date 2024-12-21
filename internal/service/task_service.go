@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"github.com/oswgg/todo-htmx/internal/models"
 	"github.com/oswgg/todo-htmx/internal/repositories"
 )
@@ -10,7 +9,7 @@ type TaskService interface {
 	Create(task *models.Task) (*models.Task, error)
 	List() ([]*models.Task, error)
 	FindByID(id int64) (*models.Task, error)
-	//Update(task *models.Task) ([]*models.Task, error)
+	Update(task *models.Task) ([]*models.Task, error)
 	//Delete(id int64) error
 	//Toggle(id int64) (*models.Task, error)
 }
@@ -36,17 +35,17 @@ func (s *TaskServiceImpl) List() ([]*models.Task, error) {
 	return s.repo.List()
 }
 func (s *TaskServiceImpl) FindByID(id int64) (*models.Task, error) {
-	fmt.Println(id)
 	return s.repo.FindById(id)
 }
 
-//func (s *TaskServiceImpl) Update(task *models.Task) ([]*models.Task, error) {
-//	updatedTaskList, err := s.repo.Update(task)
-//	if err != nil {
-//		return nil, err
-//	}
-//	return updatedTaskList, nil
-//}
+func (s *TaskServiceImpl) Update(task *models.Task) ([]*models.Task, error) {
+	updatedTaskList, err := s.repo.Update(task)
+	if err != nil {
+		return nil, err
+	}
+	return updatedTaskList, nil
+}
+
 //func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
 //	return s.repo.Toggle(id)
 //}

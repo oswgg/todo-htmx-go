@@ -32,6 +32,7 @@
         {{.Name}}
         <button
                 hx-get="/task/update/{{.ID}}"
+                onclick="window.location.href='/task/update/{{.ID}}'"
                 hx-target="#container"
                 hx-swap="outerHTML"
                 type="button"

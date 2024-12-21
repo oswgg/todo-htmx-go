@@ -31,9 +31,9 @@ func main() {
 	root := http.NewServeMux()
 
 	root.HandleFunc("POST /task", taskHandler.Create)
-	//root.HandleFunc("PUT /task/{id}/toggle", taskHandler.ToggleTask)
+	root.HandleFunc("PUT /task/{id}/toggle", taskHandler.ToggleTask)
 	root.HandleFunc("GET /task/update/{id}", taskHandler.UpdateView)
-	//root.HandleFunc("POST /task/update/{id}", taskHandler.Update)
+	root.HandleFunc("POST /task/update/{id}", taskHandler.Update)
 	root.HandleFunc("GET /", taskHandler.List)
 
 	server := &http.Server{

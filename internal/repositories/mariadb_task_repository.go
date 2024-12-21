@@ -51,8 +51,33 @@ func (m *MariadbTaskRepository) Create(task *models.Task) (*models.Task, error) 
 	return task, nil
 }
 
-//func (m *MariadbTaskRepository) Update(task *models.Task) ([]*models.Task, error) {
-//}
+func (m *MariadbTaskRepository) Update(task *models.Task) ([]*models.Task, error) {
+	var returningTask []*models.Task
+	var rows *sql.Rows
+	var err error
+
+	_, err = m.db.Exec("UPDATE tasks SET name = ? WHERE id = ?", task.Name, task.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err = m.db.Query("SELECT id, name, completed, created_at FROM tasks")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		updTask := models.Task{}
+		err = rows.Scan(&updTask.ID, &updTask.Name, &updTask.Completed, &updTask.CreatedAt)
+		if err != nil {
+			return nil, err
+		}
+		returningTask = append(returningTask, &updTask)
+	}
+
+	return returningTask, nil
+}
+
 //
 //func (m *MariadbTaskRepository) Delete(id int64) error {
 //}

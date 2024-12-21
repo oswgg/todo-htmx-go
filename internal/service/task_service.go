@@ -8,11 +8,11 @@ import (
 
 type TaskService interface {
 	Create(task *models.Task) (*models.Task, error)
-	Update(task *models.Task) ([]*models.Task, error)
-	Delete(id int64) error
-	Toggle(id int64) (*models.Task, error)
 	List() ([]*models.Task, error)
 	FindByID(id int64) (*models.Task, error)
+	//Update(task *models.Task) ([]*models.Task, error)
+	//Delete(id int64) error
+	//Toggle(id int64) (*models.Task, error)
 }
 
 type TaskServiceImpl struct {
@@ -32,23 +32,24 @@ func (s *TaskServiceImpl) Create(task *models.Task) (*models.Task, error) {
 	}
 	return newTaskList, nil
 }
-func (s *TaskServiceImpl) Update(task *models.Task) ([]*models.Task, error) {
-	updatedTaskList, err := s.repo.Update(task)
-	if err != nil {
-		return nil, err
-	}
-	return updatedTaskList, nil
-}
-func (s *TaskServiceImpl) Delete(id int64) error {
-	return s.repo.Delete(id)
-}
 func (s *TaskServiceImpl) List() ([]*models.Task, error) {
 	return s.repo.List()
-}
-func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
-	return s.repo.Toggle(id)
 }
 func (s *TaskServiceImpl) FindByID(id int64) (*models.Task, error) {
 	fmt.Println(id)
 	return s.repo.FindById(id)
 }
+
+//func (s *TaskServiceImpl) Update(task *models.Task) ([]*models.Task, error) {
+//	updatedTaskList, err := s.repo.Update(task)
+//	if err != nil {
+//		return nil, err
+//	}
+//	return updatedTaskList, nil
+//}
+//func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
+//	return s.repo.Toggle(id)
+//}
+//func (s *TaskServiceImpl) Delete(id int64) error {
+//	return s.repo.Delete(id)
+//}

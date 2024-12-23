@@ -99,4 +99,50 @@ func (h *TaskHandler) Update(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TaskHandler) ToggleTask(w http.ResponseWriter, r *http.Request) {
+	var updTask *models.Task
+	var err error
+	var id int
+	id, err = strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/task/toggle/"))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	_, err = h.service.FindByID(int64(id))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	updTask, err = h.service.Toggle(int64(id))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	tmpl := template.Must(template.ParseFiles("web/templates/index.html"))
+	err = tmpl.ExecuteTemplate(w, "task", updTask)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func (h *TaskHandler) Delete(w http.ResponseWriter, r *http.Request) {
+	var id int
+	var err error
+
+	id, err = strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/task/delete/"))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	_, err = h.service.FindByID(int64(id))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = h.service.Delete(int64(id))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	w.Header().Set("HX-Location", "/")
+	w.WriteHeader(http.StatusOK)
 }

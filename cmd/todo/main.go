@@ -30,11 +30,12 @@ func main() {
 
 	root := http.NewServeMux()
 
-	root.HandleFunc("POST /task", taskHandler.Create)
-	root.HandleFunc("PUT /task/{id}/toggle", taskHandler.ToggleTask)
 	root.HandleFunc("GET /task/update/{id}", taskHandler.UpdateView)
-	root.HandleFunc("POST /task/update/{id}", taskHandler.Update)
 	root.HandleFunc("GET /", taskHandler.List)
+	root.HandleFunc("POST /task", taskHandler.Create)
+	root.HandleFunc("PUT /task/toggle/{id}", taskHandler.ToggleTask)
+	root.HandleFunc("POST /task/update/{id}", taskHandler.Update)
+	root.HandleFunc("DELETE /task/delete/{id}", taskHandler.Delete)
 
 	server := &http.Server{
 		Addr:    ":8080",

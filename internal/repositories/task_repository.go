@@ -9,6 +9,6 @@ type TaskRepository interface {
 	List() ([]*models.Task, error)
 	Create(task *models.Task) (*models.Task, error)
 	Update(task *models.Task) ([]*models.Task, error)
-	//Toggle(id int64) (*models.Task, error)
-	//Delete(id int64) error
+	Toggle(id int64) (*models.Task, error)
+	Delete(id int64) error
 }

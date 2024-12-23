@@ -22,7 +22,7 @@
     <div class="task-item {{if .Completed}}completed{{end}}" id="task-{{.ID}}">
         <input
                 {{if .Completed}}checked{{end}}
-                hx-put="/task/{{.ID}}/toggle"
+                hx-put="/task/toggle/{{.ID}}"
                 hx-target="#task-{{.ID}}"
                 hx-swap="outerHTML"
                 type="checkbox"
@@ -37,5 +37,12 @@
                 hx-swap="outerHTML"
                 type="button"
         >Editar</button>
+
+        <button
+            hx-delete="/task/delete/{{.ID}}"
+            hx-target="#task-{{.ID}}"
+            hx-swap="delete"
+            type="button"
+        >Eliminar</button>
     </div>
 {{ end }}

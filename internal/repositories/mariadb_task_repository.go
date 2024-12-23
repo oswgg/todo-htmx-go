@@ -78,9 +78,34 @@ func (m *MariadbTaskRepository) Update(task *models.Task) ([]*models.Task, error
 	return returningTask, nil
 }
 
-//
-//func (m *MariadbTaskRepository) Delete(id int64) error {
-//}
-//
-//func (m *MariadbTaskRepository) Toggle(id int64) (*models.Task, error) {
-//}
+func (m *MariadbTaskRepository) Toggle(id int64) (*models.Task, error) {
+	var row *sql.Row
+
+	task, err := m.FindById(id)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = m.db.Exec("UPDATE tasks SET completed = ? WHERE id = ?", !task.Completed, id)
+	if err != nil {
+		return nil, err
+	}
+
+	row = m.db.QueryRow("SELECT id, name, completed, created_at FROM tasks WHERE id = ?", id)
+
+	err = row.Scan(&task.ID, &task.Name, &task.Completed, &task.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}
+
+func (m *MariadbTaskRepository) Delete(id int64) error {
+	var err error = nil
+	_, err = m.db.Exec("DELETE FROM tasks WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+	return err
+}

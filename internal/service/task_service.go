@@ -10,8 +10,8 @@ type TaskService interface {
 	List() ([]*models.Task, error)
 	FindByID(id int64) (*models.Task, error)
 	Update(task *models.Task) ([]*models.Task, error)
-	//Delete(id int64) error
-	//Toggle(id int64) (*models.Task, error)
+	Delete(id int64) error
+	Toggle(id int64) (*models.Task, error)
 }
 
 type TaskServiceImpl struct {
@@ -46,9 +46,10 @@ func (s *TaskServiceImpl) Update(task *models.Task) ([]*models.Task, error) {
 	return updatedTaskList, nil
 }
 
-//func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
-//	return s.repo.Toggle(id)
-//}
-//func (s *TaskServiceImpl) Delete(id int64) error {
-//	return s.repo.Delete(id)
-//}
+func (s *TaskServiceImpl) Toggle(id int64) (*models.Task, error) {
+	return s.repo.Toggle(id)
+}
+
+func (s *TaskServiceImpl) Delete(id int64) error {
+	return s.repo.Delete(id)
+}
